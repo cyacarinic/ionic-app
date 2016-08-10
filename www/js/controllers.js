@@ -36,12 +36,12 @@ function ($scope, $stateParams, $location, $ionicHistory) {
 // codigo del controlador
 function ($scope, $stateParams, $cordovaGeolocation) {
 
-	$scope.mensaje = "Cargando el mapa...";
-
-	var options = {timeout: 10000, enableHighAccuracy: true};
+	$scope.stateMap = "Loading";
+	var options = {timeout: 15000, enableHighAccuracy: true};
 
 	$cordovaGeolocation.getCurrentPosition(options)
 		.then(function(position){
+			$scope.stateMap = "Ok";
 			var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
 			var mapOptions = {
@@ -71,10 +71,18 @@ function ($scope, $stateParams, $cordovaGeolocation) {
 		    });
 
 		}, function(error){
-			console.log("Could not get location");
-			$scope.mensaje = "ERROR!!";
-		});
+			$scope.stateMap = "Error";
+			$scope.mensaje = "ERROR!! --> "+JSON.stringify(error);
 
+			alert("Could not get location");
+			var latLng = new google.maps.LatLng(-12.11665, -77.024201);
+			var mapOptions = {
+				center: latLng,
+				zoom: 15,
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			};
+			$scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+		});
 
 }])
    

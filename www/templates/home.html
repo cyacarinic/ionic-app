@@ -1,7 +1,13 @@
 <ion-view title="Mapa">
     <ion-content>
+    	<div ng-if="stateMap == 'Loading'" style="text-align: center">
+            <br><ion-spinner icon="ripple"></ion-spinner>
+        </div>
+        <div ng-if="stateMap == 'Error'" style="text-align: center">
+            {{mensaje}}
+        </div>
 
-    	<div id="map" data-tap-disabled="true">{{mensaje}}</div>
+    	<div id="map" data-tap-disabled="true"></div>
 
     </ion-content>
 </ion-view>
