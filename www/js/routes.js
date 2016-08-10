@@ -6,12 +6,29 @@ angular.module('app.routes', [])
   // Learn more here: https://github.com/angular-ui/ui-router
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
+  var isLogged = window.localStorage.getItem("isLogged") == 'true' && window.localStorage.getItem("isLogged") != null;
+
   $stateProvider
     
-  
+  .state('tabsController', {
+    url: '/app',
+    templateUrl: 'templates/tabsController.html',
+    abstract:true,
+    controller: 'AppCtrl'
+  })
 
-      .state('tabsController.login', {
-    url: '/page2',
+  .state('tabsController.home', {
+    url: '/home',
+    views: {
+      'tab1': {
+        templateUrl: 'templates/home.html',
+        controller: 'mapsCtrl'
+      }
+    }
+  })
+
+  .state('tabsController.login', {
+    url: '/login',
     views: {
       'tab1': {
         templateUrl: 'templates/login.html',
@@ -21,7 +38,7 @@ angular.module('app.routes', [])
   })
 
   .state('tabsController.misNotificaciones', {
-    url: '/page3',
+    url: '/notificaciones',
     views: {
       'tab2': {
         templateUrl: 'templates/misNotificaciones.html',
@@ -31,7 +48,7 @@ angular.module('app.routes', [])
   })
 
   .state('tabsController.logout', {
-    url: '/page4',
+    url: '/logout',
     views: {
       'tab3': {
         templateUrl: 'templates/logout.html',
@@ -40,14 +57,10 @@ angular.module('app.routes', [])
     }
   })
 
-  .state('tabsController', {
-    url: '/page1',
-    templateUrl: 'templates/tabsController.html',
-    abstract:true
-  })
-
-$urlRouterProvider.otherwise('/page1/page2')
-
+if(!isLogged)
+    $urlRouterProvider.otherwise('/app/login')
+else
+    $urlRouterProvider.otherwise('/app/home');
   
 
 });
