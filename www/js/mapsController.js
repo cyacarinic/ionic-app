@@ -3,6 +3,14 @@ angular.module('app.controllers')
 	.controller('mapsCtrl', ['$scope', '$stateParams', '$cordovaGeolocation',
 		function ($scope, $stateParams, $cordovaGeolocation) {
 
+			$scope.detalle = "inicio";
+
+			$scope.closeCard = function(){
+				var descDiv = document.getElementById("descripcion");
+				descDiv.style.display = 'none';
+				$scope.detalle = "";
+			};
+
 			$scope.stateMap = "Loading";
 			var options = {timeout: 15000, enableHighAccuracy: true};
 
@@ -18,6 +26,7 @@ angular.module('app.controllers')
 					};
 					$scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
+					// Graficar Ruta
 					var rutaFibra = [];
 					rutaFibra.push( new google.maps.LatLng(-12.11658,-77.02427) ); // YACHAY
 					rutaFibra.push( new google.maps.LatLng(-12.11647, -77.02183) ); // Manuel Irribarren
@@ -46,10 +55,6 @@ angular.module('app.controllers')
 					rutaFibra.push( new google.maps.LatLng(-12.11796, -77.02913) ); // Arequipa
 					rutaFibra.push( new google.maps.LatLng(-12.11695, -77.02806) ); // Petit Thouars
 					rutaFibra.push( new google.maps.LatLng(-12.11662, -77.02628) ); // Via Expresa
-
-
-					
-
 					// Ruta hacia GYM
 					rutaFibra.push( new google.maps.LatLng(-12.11658,-77.02427) ); // YACHAY
 					rutaFibra.push( new google.maps.LatLng(-12.11654,-77.02285) ); // Dante
@@ -64,6 +69,19 @@ angular.module('app.controllers')
 					polyline.setMap($scope.map);
 
 
+					// Marcador de prueba ==============================================
+					var testMarker = new google.maps.Marker({
+			    		map: $scope.map,
+			    		position: new google.maps.LatLng(-12.11175,-77.02557),
+			    		title: "Test"
+			    	});
+			    	google.maps.event.addListener(testMarker, 'click', function () {
+			    		console.log("-12.11175,-77.02557");
+			    		$scope.detalle = "gg wp";
+			    		var descDiv = document.getElementById("descripcion");
+						descDiv.style.display = descDiv.style.display === 'none' ? 'block' : 'none';
+			    	});
+			    	// =================================================================
 
 
 					// Cuando carga el mapa
@@ -71,9 +89,9 @@ angular.module('app.controllers')
 				    	var marker = new google.maps.Marker({
 				    		map: $scope.map,
 				    		animation: google.maps.Animation.DROP,
-				    		position: latLng
+				    		position: latLng,
+				    		title: "Tu ubicación"
 				    	});
-
 
 				    	var infoWindow = new google.maps.InfoWindow({
 				    		content: "Estás aquí!"
